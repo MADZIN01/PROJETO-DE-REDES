@@ -80,8 +80,6 @@ Suporta modo local (1v1 no mesmo computador) e modo online com comunicação TCP
 - Mantém 100% de compatibilidade com código original.
 - Preserva protocolo TCP/UDP e IPv4/IPv6.
 
-> Git tag: `git tag -a v2.0-gui -m "v2.0 - Interface gráfica completa"`
-
 ## 📥 Como baixar e instalar
 
 **Método 1 — Clone com Git**
