@@ -15,7 +15,6 @@ Suporta modo local (1v1 no mesmo computador) e modo online com comunicação TCP
 - 🚀 **Fácil Inicialização:** Script `.bat` incluído para Windows  
 
 ---
-
 ## 📋 Pré-requisitos
 
 - Python 3.7 ou superior — [Download Python](https://www.python.org/downloads/)
@@ -23,6 +22,65 @@ Suporta modo local (1v1 no mesmo computador) e modo online com comunicação TCP
 - Conexão com a internet (apenas para modo online)
 
 ---
+## 🚀 Evolução do Projeto
+
+### v0.1 — Estrutura inicial
+- Lógica básica do jogo da velha, apenas modo local.
+- Sem rede, sem modularização avançada.
+
+---
+
+### v0.2 — Introdução do modo online (TCP)
+**feat:** implementação do sistema P2P básico com TCP
+- Modulariza código em `jogo.py`, `p2p.py` e `main.py`.
+- Adiciona comunicação TCP host/cliente.
+- Cria scripts `.bat` para facilitar inicialização.
+- Mantém compatibilidade da lógica original.
+
+---
+
+### v0.3 — Suporte ao protocolo UDP
+**feat:** suporte UDP e unificação de interface de protocolos
+- Implementa suporte dual TCP/UDP com seleção pelo usuário.
+- Unifica API de comunicação para ambos protocolos.
+- Melhora tratamento de endereçamento para UDP.
+- Substitui scripts separados por `setup.bat` unificado.
+- Adiciona validação e tratamento de erros de rede.
+
+---
+
+### v0.5 — Modularização sólida e melhorias
+**feat:** sistema híbrido com refatoração completa
+- Adiciona modo offline (`main_offline.py`).
+- Refatora `jogo.py` para funções puras sem estado global.
+- Implementa menu principal com seleção de modalidade.
+- Adiciona função `verificar_empate()` para melhor UX.
+- Melhora interface visual do tabuleiro.
+- Cria `setup.bat` com loop de menu.
+
+---
+
+### v1.0 — Protocolo de aplicação completo
+**feat:** lançamento com funcionalidades robustas
+- Implementa protocolo de mensagens estruturado (`JOGADA|FIM_DE_JOGO|EMPATE`).
+- Adiciona suporte completo IPv4/IPv6 com detecção automática.
+- Interface profissional com tabuleiro gráfico e menu limpo.
+- Implementa `realizar_jogada()` e `encerrar()` para melhor organização.
+- Melhora tratamento de erros e validação de entrada.
+- Muda sistema de coordenadas de 0-2 para 1-3.
+- Substitui comunicação simples por protocolo estruturado.
+
+---
+
+### v2.0 — Interface gráfica completa (Tkinter)
+**feat:** GUI moderna e intuitiva
+- Substitui interface CLI por GUI visual com cores (X=vermelho, O=azul).
+- Cria tabuleiro clicável e menus hierárquicos.
+- Implementa comunicação thread-safe para manter GUI responsiva.
+- Mantém 100% de compatibilidade com código original.
+- Preserva protocolo TCP/UDP e IPv4/IPv6.
+
+> Git tag: `git tag -a v2.0-gui -m "v2.0 - Interface gráfica completa"`
 
 ## 📥 Como baixar e instalar
 
@@ -55,7 +113,6 @@ python main.py
 # ou
 python3 main.py
 ```
-
 ---
 
 ## 🎮 Como jogar
