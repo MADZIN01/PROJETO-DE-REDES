@@ -84,8 +84,7 @@ Suporta modo local (1v1 no mesmo computador) e modo online com comunicação TCP
 
 **Método 1 — Clone com Git**
 ```bash
-git clone [https://github.com/MADZIN01/PROJETO-DE-REDES..git]
-cd jogo-da-velha-python
+git clone https://github.com/MADZIN01/PROJETO-DE-REDES.git
 ```
 
 **Método 2 — Download ZIP**
@@ -93,7 +92,7 @@ cd jogo-da-velha-python
 2. Extraia em uma pasta de sua escolha  
 3. Navegue até a pasta no terminal:
 ```bash
-cd caminho/para/jogo-da-velha-python
+cd PROJETO-DE-REDES
 ```
 
 ---
