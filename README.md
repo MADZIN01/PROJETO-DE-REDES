@@ -45,17 +45,19 @@ Clique em "Close"
 
 
 
-# Teste 1: Verificar se Python foi instalado
+## Teste 1: Verificar se Python foi instalado
 python --version
-# Deve retornar algo como: Python 3.11.5
+ Deve retornar algo como: Python 3.11.5
 
-# Teste 2: Verificar se o PATH está correto
+
+## Teste 2: Verificar se o PATH está correto
 python -c "print('Python funcionando!')"
-# Deve imprimir: Python funcionando!
+ Deve imprimir: Python funcionando!
 
-# Teste 3: Verificar tkinter (interface gráfica)
+
+## Teste 3: Verificar tkinter (interface gráfica)
 python -c "import tkinter; print('Interface gráfica OK!')"
-# Deve imprimir: Interface gráfica OK!
+ Deve imprimir: Interface gráfica OK!
 
 
 ---
