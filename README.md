@@ -21,6 +21,43 @@ Suporta modo local (1v1 no mesmo computador) e modo online com comunicação TCP
 - Tkinter (geralmente incluído com Python)
 - Conexão com a internet (apenas para modo online)
 
+🛠️ Instalação Completa do Python
+🔽 Baixando o Python
+
+Recomendo baixar o python pela loja do proprio windows (microfsoft store)
+pesquise "python" , baixe a versao mais atualizada possivel ou...
+
+Acesse o site oficial (https://www.python.org/downloads/)
+Clique em "Downloads"
+Baixe a versão mais recente (Python 3.11+ recomendado)
+
+🖥️ Instalação no Windows (IMPORTANTE!)
+⚠️ ATENÇÃO: Durante a instalação, marque OBRIGATORIAMENTE:
+✅ "Add Python to PATH"
+✅ "Install pip"
+Passo a passo:
+
+Execute o instalador baixado
+PRIMEIRA TELA: ✅ Marque "Add Python to PATH" (ESSENCIAL!)
+Clique em "Install Now"
+Aguarde a instalação
+Clique em "Close"
+
+
+
+# Teste 1: Verificar se Python foi instalado
+python --version
+# Deve retornar algo como: Python 3.11.5
+
+# Teste 2: Verificar se o PATH está correto
+python -c "print('Python funcionando!')"
+# Deve imprimir: Python funcionando!
+
+# Teste 3: Verificar tkinter (interface gráfica)
+python -c "import tkinter; print('Interface gráfica OK!')"
+# Deve imprimir: Interface gráfica OK!
+
+
 ---
 ## 🚀 Evolução do Projeto
 
@@ -145,7 +182,6 @@ python3 main.py
 - Cliente conecta usando esse IP
 
 ---
-
 ## 📡 Protocolos Disponíveis
 
 **TCP (Recomendado)**
@@ -222,7 +258,7 @@ start.jogo.bat
 **Primeira partida online**
 - Host: IP `0.0.0.0`, Porta `5555`, TCP, Host  
 - Cliente: IP do Host, Porta `5555`, TCP, Cliente  
-💡 Para testes locais, use IP `127.0.0.1` nos dois jogadores.
+💡 Para testes locais, use o mesmo IP `127.0.0.1` nos dois jogadores.
 
 ---
 🎯 **Divirta-se jogando este clássico jogo da velha com tecnologia moderna!**
