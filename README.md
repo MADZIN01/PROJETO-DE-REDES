@@ -138,6 +138,8 @@ Você pode acessar os comitis logo no início do repositório
 e escolher a versão que lhe interessar desde v0.1 a v2.0full
 ---
 
+
+
 ## ▶️ Como executar o jogo
 
 **Windows (Recomendado)**
