@@ -1,0 +1,235 @@
+# Relatório: Funcionamento da Interface Gráfica do Jogo da Velha
+
+## 1. Visão Geral da Implementação
+
+### 1.1 Objetivo da Interface Gráfica
+A interface gráfica foi desenvolvida para substituir a interface de linha de comando original, proporcionando uma experiência mais intuitiva e visual para os usuários. A implementação utilizou a biblioteca **Tkinter**, que é nativa do Python e oferece componentes visuais essenciais para criação de aplicações desktop.
+
+### 1.2 Principais Alterações Realizadas
+- **Remoção da opção "vs Computador"**: O código foi modificado para oferecer apenas jogos 1v1 (Jogador vs Jogador)
+- **Simplificação do menu principal**: Agora apresenta apenas duas opções de jogo: Local e Online
+- **Manutenção completa da funcionalidade de rede**: Toda a lógica P2P original foi preservada
+
+## 2. Arquitetura da Interface Gráfica
+
+### 2.1 Classe Principal: JogoDaVelhaGUI
+A interface é implementada através da classe `JogoDaVelhaGUI`, que centraliza toda a lógica de apresentação e interação com o usuário.
+
+**Atributos principais:**
+- `root`: Janela principal do Tkinter (450x550 pixels)
+- `tabuleiro`: Matriz 3x3 representando o estado do jogo
+- `botoes_tabuleiro`: Matriz de botões que representa visualmente o tabuleiro
+- `modo_jogo`: Define se é jogo local ('pvp') ou online ('online')
+
+**Variáveis específicas do modo online:**
+- `sock`: Socket de comunicação de rede
+- `jogador_local`: Símbolo do jogador ('X' para host, 'O' para cliente)
+- `minha_vez`: Controla alternância de turnos
+- `conexao_ativa`: Flag indicando status da conexão
+
+### 2.2 Estrutura de Navegação
+A interface funciona como um sistema de menus hierárquicos:
+
+```
+Menu Principal
+├── Jogo 1v1 Local → Interface de Jogo
+├── Jogo 1v1 Online → Menu de Configuração → Interface de Jogo
+└── Sair
+```
+
+## 3. Componentes da Interface Gráfica
+
+### 3.1 Menu Principal
+**Função:** `mostrar_menu_principal()`
+
+**Elementos visuais:**
+- **Título**: "JOGO DA VELHA" em fonte Arial 24pt, cor azul
+- **Botão "Jogo 1v1 Local"**: Verde claro, inicia jogo PvP imediato
+- **Botão "Jogo 1v1 Online"**: Azul claro, abre configurações de rede
+- **Botão "Sair"**: Vermelho claro, encerra a aplicação
+
+**Layout:** Centralizado verticalmente com espaçamento de 30px no topo e 10px entre botões.
+
+### 3.2 Menu de Configuração Online
+**Função:** `mostrar_menu_online()`
+
+**Elementos de configuração:**
+1. **Seleção de Protocolo**: Radio buttons para TCP/UDP
+2. **Campo IP**: Entry widget com valor padrão "127.0.0.1"
+3. **Campo Porta**: Entry widget com valor padrão "5555"
+4. **Modo de Conexão**: Radio buttons para Host/Cliente
+5. **Botão Conectar**: Inicia processo de conexão
+6. **Label de Status**: Mostra progresso da conexão
+
+**Validações implementadas:**
+- Verificação de campos obrigatórios
+- Validação de porta numérica (1-65535)
+- Mensagens de erro via `messagebox`
+
+### 3.3 Interface do Jogo
+**Função:** `criar_interface_jogo()`
+
+**Componentes principais:**
+
+#### 3.3.1 Área de Informações
+- **Título do modo**: Indica tipo de jogo (Local/Online)
+- **Indicador de turno**: 
+  - Modo local: "Vez do jogador: X/O"
+  - Modo online: "Sua vez!" / "Vez do oponente..."
+
+#### 3.3.2 Tabuleiro Visual
+- **Grade 3x3**: 9 botões organizados em `tk.Frame`
+- **Botões do tabuleiro**: 
+  - Tamanho: 4x2 caracteres
+  - Fonte: Arial 20pt, negrito
+  - Cor de fundo: Branco
+  - Borda: Raised com 2px
+- **Sistema de cores**:
+  - X: Vermelho
+  - O: Azul
+
+#### 3.3.3 Controles de Jogo
+- **Botão Reiniciar**: Verde, reseta o jogo atual
+- **Botão Voltar**: Cinza, retorna ao menu anterior
+
+## 4. Lógica de Funcionamento
+
+### 4.1 Processamento de Jogadas
+**Função principal:** `processar_jogada_gui(linha, coluna)`
+
+**Fluxo de execução:**
+1. **Validação de turno** (modo online)
+2. **Execução da jogada** usando `realizar_jogada()`
+3. **Atualização visual** do botão clicado
+4. **Verificação de vitória/empate**
+5. **Continuação do jogo** conforme o modo
+
+### 4.2 Modo Local (PvP)
+**Características:**
+- Alternância automática entre jogadores X e O
+- Execução síncrona na thread principal
+- Interface atualizada imediatamente após cada jogada
+
+**Sequência de uma jogada:**
+1. Jogador clica em posição vazia
+2. Símbolo é exibido no botão (X=vermelho, O=azul)
+3. Botão é desabilitado para evitar cliques duplos
+4. Verificação de vitória/empate
+5. Alternância para próximo jogador
+
+### 4.3 Modo Online
+**Características:**
+- Comunicação via socket (TCP/UDP)
+- Execução assíncrona com threads
+- Sincronização de turnos entre jogadores
+
+#### 4.3.1 Estabelecimento de Conexão
+**Processo Host (Servidor):**
+1. Chama `aguardar_conexao()` do módulo p2p
+2. Aguarda cliente se conectar
+3. Torna-se jogador X (primeiro a jogar)
+
+**Processo Cliente:**
+1. Chama `conectar_cliente()` do módulo p2p
+2. Conecta ao host especificado
+3. Torna-se jogador O (segundo a jogar)
+
+#### 4.3.2 Thread de Recepção
+**Função:** `thread_recepcao_online()`
+
+**Responsabilidades:**
+- Recebe mensagens do oponente em loop contínuo
+- Interpreta tipos de mensagem (JOGADA, FIM_DE_JOGO, EMPATE)
+- Chama callbacks thread-safe via `self.root.after()`
+
+**Protocolo de mensagens:**
+- `"JOGADA|linha|coluna"`: Coordenadas da jogada
+- `"FIM_DE_JOGO|vencedor"`: Indica vitória
+- `"EMPATE"`: Indica empate
+
+### 4.4 Sistema Thread-Safe
+**Problema:** Tkinter não é thread-safe - apenas a thread principal pode modificar a interface.
+
+**Solução implementada:**
+```python
+self.root.after(0, callback_function)
+```
+
+**Callbacks implementados:**
+- `callback_jogada_recebida()`: Processa jogada do oponente
+- `callback_fim_jogo_recebido()`: Processa vitória do oponente
+- `callback_empate_recebido()`: Processa empate
+- `callback_erro_comunicacao()`: Trata erros de rede
+
+## 5. Integração com Código Original
+
+### 5.1 Preservação de Funcionalidades
+A interface gráfica mantém **100% de compatibilidade** com o código original:
+
+**Módulo `jogo.py`:**
+- `criar_tabuleiro()`: Inicializa matriz 3x3
+- `realizar_jogada()`: Valida e executa jogadas
+- `verificar_vitoria()`: Detecta condições de vitória
+- `verificar_empate()`: Detecta empate
+
+**Módulo `p2p.py`:**
+- `aguardar_conexao()`: Modo servidor
+- `conectar_cliente()`: Modo cliente
+- `enviar()` / `receber()`: Comunicação de rede
+- `encerrar()`: Fechamento de conexões
+
+### 5.2 Protocolo de Aplicação
+O protocolo de mensagens original foi mantido integralmente:
+
+**Funções de protocolo:**
+- `criar_msg_jogada()`: Formata mensagem de jogada
+- `criar_msg_fim()`: Formata mensagem de fim de jogo
+- `interpretar_msg()`: Decodifica mensagens recebidas
+
+## 6. Tratamento de Erros e Robustez
+
+### 6.1 Validações de Interface
+- **Campos obrigatórios**: IP e porta devem ser preenchidos
+- **Formato de porta**: Deve ser número entre 1-65535
+- **Estado de conexão**: Verifica se conexão está ativa
+
+### 6.2 Tratamento de Erros de Rede
+- **Falha de conexão**: Exibe mensagem de erro
+- **Perda de conexão**: Detecta e notifica usuário
+- **Mensagens inválidas**: Ignora ou reporta erro
+- **Timeout**: Encerra conexão graciosamente
+
+### 6.3 Limpeza de Recursos
+**Função:** `sair_jogo()`
+- Encerra conexões de rede ativas
+- Finaliza threads de recepção
+- Destrói janela principal corretamente
+
+## 7. Vantagens da Interface Gráfica
+
+### 7.1 Usabilidade
+- **Intuitividade**: Interface visual clara e objetiva
+- **Feedback imediato**: Cores e estados visuais informativos
+- **Navegação simples**: Menus hierárquicos organizados
+
+### 7.2 Funcionalidade
+- **Multimodo**: Suporta jogos locais e online
+- **Configuração flexível**: TCP/UDP, IP/porta customizáveis
+- **Status em tempo real**: Indicadores de turno e conexão
+
+### 7.3 Robustez
+- **Thread-safe**: Comunicação segura entre threads
+- **Tratamento de erro**: Validações e recuperação de falhas
+- **Compatibilidade total**: Integração perfeita com código original
+
+## 8. Conclusão
+
+A interface gráfica desenvolvida representa uma evolução significativa do projeto original, mantendo toda a funcionalidade core enquanto oferece uma experiência de usuário moderna e intuitiva. A implementação demonstra conhecimento sólido de:
+
+- **Programação GUI** com Tkinter
+- **Programação concorrente** com threads
+- **Comunicação de rede** com sockets
+- **Padrões de arquitetura** orientada a objetos
+- **Integração de sistemas** preservando compatibilidade
+
+A remoção da opção "vs Computador" simplificou o código sem perda de funcionalidade essencial, focando exclusivamente em jogos 1v1, que representam a essência do jogo da velha tradicional.
