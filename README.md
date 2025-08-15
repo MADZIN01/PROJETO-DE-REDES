@@ -270,10 +270,10 @@ start.jogo.bat
 🎯 **Divirta-se jogando este clássico jogo da velha com tecnologia moderna!**
 
 ## DESENVOLVEDORES : 
-1. Madson Alessio 
-2. Julio Santos 
-3. Abraao Araujo
-4. Eduado Torres 
-5. Davi lucas nobrega 
+Nome: Madson Alessio da Silva, Matrícula: 20241054010030 
+Nome: Davi Lucas Nóbrega Silva, Matrícula: 20241054010038 
+Nome: Abraão Bezerra de Araújo, Matrícula: 20241054010016 
+Nome: Júlio Santos Pereira, Matrícula: 20241054010017 
+Nome: Eduardo Henrique de Almeida Torres, Matrícula: 20241054010008
 
 
